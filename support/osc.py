@@ -1,15 +1,12 @@
-from support import wavetables as wav 
-
+from support import Wavetables as wav 
 
 class Oscillator:
 
     _sample_frequency: int = 44100
+    _osc_type = wav.SINE 
 
-    def __init__(self, *args, **kwargs):  # pyright: ignore[reportUnknownParameterType, reportMissingParameterType]
-        if 'sample_frequency' in kwargs.keys():
-            self.sample_frequency = kwargs['sample_frequency']
-        self.osc_type = wav.Triangle()
-
+    def __init__(self, sample_freq: 44100, ):  # pyright: ignore[reportUnknownParameterType, reportMissingParameterType]
+            self.sample_frequency = kwargs['']
     @property
     def sample_frequency(self) -> int:
         return self._sample_frequency

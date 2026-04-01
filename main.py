@@ -1,3 +1,4 @@
+#! /usr/bin/env python
 import matplotlib.pyplot as plt
 from support import wavetables as wav
 import numpy as np
@@ -20,7 +21,7 @@ def test():
     sr = 44100  # sample rate
     freqs = np.fft.rfftfreq(n, 1/sr)
     fft = np.fft.rfft(wave)
-    cutoffs = [2000, 4000, 8000]
+    cutoffs = [2000, 4000, 10000]
     fig, axes = plt.subplots(2, 2, figsize=(12, 8))
     axes[0, 0].plot(wave)
     axes[0, 0].set_title('Original')
