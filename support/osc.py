@@ -7,6 +7,7 @@ class Oscillator:
     _tab_len: int = len(_table)
     _kincr_const_calc: float = _tab_len/_sample_frequency
     _freq: float|int = 440.0
+    _targ_freq: float|int = 440
     _kincr: float = 0.0
     _curidx: float = 0.0
 
@@ -37,8 +38,7 @@ class Oscillator:
 
     @frequency.setter
     def frequency(self, val: float|int) -> None:
-        self._freq = min(max(0, val), self._sample_frequency/2)
-        self._update_kincr()
+        self._targ_freq = min(max(0, val), self._sample_frequency/2)
 
     def change_table(self,wavetable: list[int]) -> None:
         L: int = len(wavetable)
@@ -47,13 +47,47 @@ class Oscillator:
             self._table = wavetable
         self._update_kincr()
 
+    def sync(self) -> None: 
+        self._curidx = 0
+        self._freq = self._targ_freq
+
+
     def gen_frame(self, samples: int) -> list[float]:
+        delta_freq = 0.0
+        if self._targ_freq != self._freq:
+            delta_freq = (self._targ_freq-self._freq)/samples
         out: list[float] = []
         for i in range(samples):
+            if delta_freq:
+                self._freq += delta_freq
+                self._update_kincr()
             next_idx = int(self._curidx+1)%(self._tab_len - 1)
             remainder = self._curidx%1
             cur_idx = int(self._curidx)
             out.append( (1-remainder)*self._table[cur_idx] + remainder*self._table[next_idx] )
             self._curidx = (self._curidx + self._kincr)%(self._tab_len-1)
         return out
+
+
+if __name__ == "__main__":
+    import matplotlib.pyplot as plt
+    from .Wavetables import Wavetables as wav
+
+    def plot_simple(signal : list[float|int], show: bool = False) -> None:
+        fig, ax = plt.subplots()  # pyright: ignore[reportUnknownMemberType, reportUnusedVariable]
+        _ = ax.plot(signal)  # pyright: ignore[reportUnknownMemberType]
+        plt.show() if show else None # pyright: ignore[reportUnknownMemberType]
+    
+    o = Oscillator()
+    plot_simple(o.gen_frame(512))
+    o.frequency = 110
+    o.sync()
+    o.frequency = 880
+    o.change_table(wav.TRIANGLE)
+    out = o.gen_frame(256)
+    out.extend(o.gen_frame(256))
+    plot_simple(out, show = True)
+
+
+
 
