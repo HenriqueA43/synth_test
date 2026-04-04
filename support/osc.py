@@ -1,9 +1,9 @@
-from support.Wavetables import Wavetables as wav 
+from support.Tables import *
 
 class Oscillator:
 
-    _sample_frequency: int|float = 44100
-    _table:list[int] = wav.SINE 
+    _sample_frequency: int = 44100
+    _table:list[int] = SINE
     _tab_len: int = len(_table)
     _kincr_const_calc: float = _tab_len/_sample_frequency
     _freq: float|int = 440.0
@@ -14,7 +14,7 @@ class Oscillator:
     def _update_kincr(self) -> None:
         self._kincr = self._tab_len*self._freq/self._sample_frequency
 
-    def __init__(self, sample_freq: int|float = 44100, wavetable:list[int] = wav.SINE, frequency: float|int = 440):  
+    def __init__(self, sample_freq: int|float = 44100, wavetable:list[int] = SINE, frequency: float|int = 440):  
         self.sample_frequency = sample_freq
         self._table = wavetable
         self.frequency = frequency
@@ -50,6 +50,8 @@ class Oscillator:
     def sync(self) -> None: 
         self._curidx = 0
         self._freq = self._targ_freq
+        self._update_kincr()
+
 
 
     def gen_frame(self, samples: int) -> list[float]:
@@ -71,7 +73,6 @@ class Oscillator:
 
 if __name__ == "__main__":
     import matplotlib.pyplot as plt
-    from .Wavetables import Wavetables as wav
 
     def plot_simple(signal : list[float|int], show: bool = False) -> None:
         fig, ax = plt.subplots()  # pyright: ignore[reportUnknownMemberType, reportUnusedVariable]
@@ -83,7 +84,7 @@ if __name__ == "__main__":
     o.frequency = 110
     o.sync()
     o.frequency = 880
-    o.change_table(wav.TRIANGLE)
+    o.change_table(TRIANGLE)
     out = o.gen_frame(256)
     out.extend(o.gen_frame(256))
     plot_simple(out, show = True)
