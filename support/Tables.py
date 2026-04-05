@@ -44,7 +44,7 @@ def _test_peak(dut_list: list[TABLE_INT]) -> bool:
 
 
 if __name__ == "__main__":
-    _ = _test_int(_to_test)
-    _ = _test_range(_to_test)
-    _ = _test_peak(_to_test)
+    assert _test_int(_to_test)
+    assert _test_range(_to_test)
+    assert _test_peak(_to_test)
     _main()
