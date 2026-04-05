@@ -95,6 +95,9 @@ class Envelope:
                     self._state = State.IDLE
         return out
 
+    def is_active(self) -> bool:
+        return self._state != State.IDLE
+
     def gen_frame(self, frame_len: int) -> list[float]:
         out: list[float] = []
         for _ in range(frame_len):

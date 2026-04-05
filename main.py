@@ -2,6 +2,9 @@
 import matplotlib.pyplot as plt
 from support.Tables import *
 from support.osc import Oscillator
+from support.ADSR import Envelope
+from support.voice import Voice
+
 
 def test_osc():
 
@@ -22,7 +25,10 @@ def test_osc():
 
 
 def test_key() -> None:
-    pass
+    import keyboard
+    pressed  = set()
+    v = Voice()
+
 
 
 
