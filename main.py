@@ -2,9 +2,8 @@
 import matplotlib.pyplot as plt
 from support.Tables import *
 from support.osc import Oscillator
-import numpy as np
 
-def main():
+def test_osc():
 
     def plot_simple(signal : list[float|int], show: bool = False) -> None:
         fig, ax = plt.subplots()  # pyright: ignore[reportUnknownMemberType, reportUnusedVariable]
@@ -22,5 +21,12 @@ def main():
     plot_simple(out, show = True)
 
 
+def test_key() -> None:
+    pass
+
+
+
+
+
 if __name__ == "__main__":
-    main()
+    test_osc()
