@@ -26,7 +26,7 @@ def test_osc():
 
 def test_key() -> None:
     import keyboard
-    pressed  = set()
+    pressed: set[keyboard._Key]  = set()
     v = Voice()
 
 
