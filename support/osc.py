@@ -45,7 +45,7 @@ class Oscillator:
         if L:
             self._tab_len = L
             self._table = wavetable
-        self._update_kincr()
+            self._update_kincr()
 
     def sync(self) -> None: 
         self._curidx = 0
@@ -71,8 +71,42 @@ class Oscillator:
         return out
 
 
+def _test_frequency() -> None:
+    sample_freq = 44100
+    osc = Oscillator(sample_freq=sample_freq) 
+    osc.frequency = -1 
+    assert osc._targ_freq == 0, f"Sample frequency not being clamped to 0! current target frequency: {osc._targ_freq}"
+    osc.sample_frequency = sample_freq
+    osc.frequency = sample_freq
+    assert osc._targ_freq == sample_freq/2, "Sample frequency not being clamped to nyquist!"
+
+def _test_table() -> None:
+    osc = Oscillator()
+    ref_table = SINE
+    osc.change_table(ref_table)
+    osc.change_table([])
+    assert osc._table == ref_table, "Setting table to nothing is not ignored!"
+
+def _test_sync() -> None:
+    osc = Oscillator()
+    osc.gen_frame(1)
+    curphase = osc._curidx
+    assert curphase != 0, "Oscillator is not incrementing phase"
+    osc.sync()
+    assert osc._curidx == 0, "Sync does not reset phase to 0"
+    
+
+
+
 if __name__ == "__main__":
     import matplotlib.pyplot as plt
+
+    # unit tests
+    _test_sync()
+    _test_table()
+    _test_frequency()
+    print(" ---> All Oscillator Unit tests Passed! <--- ")
+
 
     def plot_simple(signal : list[float|int], show: bool = False) -> None:
         fig, ax = plt.subplots()  # pyright: ignore[reportUnknownMemberType, reportUnusedVariable]

@@ -47,4 +47,7 @@ if __name__ == "__main__":
     assert _test_int(_to_test)
     assert _test_range(_to_test)
     assert _test_peak(_to_test)
+    print(" ---> All Table Unit Tests Passed! <--- ")
+
+
     _main()
