@@ -83,9 +83,12 @@ def _test_frequency() -> None:
 def _test_table() -> None:
     osc = Oscillator()
     ref_table = SINE
+    new_table = TRIANGLE
     osc.change_table(ref_table)
     osc.change_table([])
     assert osc._table == ref_table, "Setting table to nothing is not ignored!"
+    osc.change_table(new_table)
+    assert osc._table == new_table, "Oscillator is not changing tables!"
 
 def _test_sync() -> None:
     osc = Oscillator()
@@ -95,7 +98,10 @@ def _test_sync() -> None:
     osc.sync()
     assert osc._curidx == 0, "Sync does not reset phase to 0"
     
-
+def _test_frame() -> None:
+    osc = Oscillator()
+    frame = osc.gen_frame(50)
+    assert len(frame) == 50, f"Oscillator is generating wrong number of samples! Expected 50. got: {len(frame)}"
 
 
 if __name__ == "__main__":

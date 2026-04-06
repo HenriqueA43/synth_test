@@ -126,3 +126,11 @@ if __name__ == "__main__":
     ax.plot(full)
     plt.show()
 
+
+
+# TODO : Unit tests 
+# - State machine: Initial state is IDLE, trigger_key() → ATTACK, release_key() → RELEASE
+# - Envelope shape: Attack reaches 1.0, decay reaches sustain level, release reaches 0.0
+# - is_active() reflects current state correctly
+# - Boundary clamping: Attack minimum (20ms), decay minimum (100ms), sustain in 0,1
+# - gen_frame returns exactly frame_len samples
