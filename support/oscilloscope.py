@@ -104,7 +104,6 @@ def oscilloscope_main() -> None:
                 update_frequency()
             case " ":
                 if not key_down:
-                    print("Key on!", f"{event.key = }")
                     key_down = True
                     voice.note_on(key_freq)
             case "r":
@@ -125,11 +124,8 @@ def oscilloscope_main() -> None:
     def on_key_release(event: KeyEvent) -> None:
         nonlocal key_down
         if ( event.key == " " or event.key == "space" ) and key_down:
-            print("Note Off!", f"{event.key = }, {key_down}")
             voice.note_off()
             key_down = False
-        else:
-            print(event.key)
 
     _ = fig.canvas.mpl_connect("key_press_event", on_key_press)  # pyright: ignore[reportArgumentType]
     _ = fig.canvas.mpl_connect("key_release_event", on_key_release)  # pyright: ignore[reportArgumentType]
@@ -138,6 +134,16 @@ def oscilloscope_main() -> None:
     plt.show()
 
 if __name__ == "__main__":
+    controls = """
+    up/down     - increase/decrease frequency by 1 semitone (Initial freq A3 - 440Hz)
+    x/z         - increase/decrease frequency by 1cent
+    left/right  - increase/decrease number of generated frames to display. each frame is a 20ms signal chunk.
+    space       - triggers note. holding donw note is currently non-functional due to keyboard rettrigering.
+    r           - resets frequency to 440Hz
+    t           - toggles between available tables.
+    q           - closes interface.
+    """
+    print(controls)
     oscilloscope_main()
 
 

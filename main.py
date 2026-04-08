@@ -23,11 +23,15 @@ def test_osc():
     out.extend(o.gen_frame(256))
     plot_simple(out, show = True)
 
-
+ 
 def test_key() -> None:
     import keyboard
+    import matplotlib.pyplot as plt
+    import matplotlib.animation as an
+    
     pressed: set[keyboard._Key]  = set()
     v = Voice()
+
 
 
 
